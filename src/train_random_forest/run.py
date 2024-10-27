@@ -92,18 +92,15 @@ def go(args):
     logger.info("Exporting model")
 
     # Save model package in the MLFlow sklearn format
-    if os.path.exists("random_forest_dir"):
-        shutil.rmtree("random_forest_dir")
+    if os.path.exists("random_forest_dir/models"):
+        shutil.rmtree("random_forest_dir/models")
+        logger.info("New folder created")
+    else:
+        logger.info("Folder already exists; skipping creation")
 
-    logger.info("Resseting folder")
-    
-
-    random_forest_dir = os.makedirs("random_forest_dir")
-
-    logger.info("New folder created")
-
+    random_forest_dir = "random_forest_dir/models"
     # Save the sk_pipe pipeline as a mlflow.sklearn model in the directory "random_forest_dir"
-    mlflow.sklearn.log_model(sk_pipe, "random_forest_model")
+    mlflow.sklearn.save_model(sk_pipe, random_forest_dir)
     logger.info(f"Model saved in {random_forest_dir}")
 
     # Upload the model we just exported to W&B
@@ -112,17 +109,16 @@ def go(args):
     # you just created to add the "random_forest_dir" directory to the artifact, and finally use
     # run.log_artifact to log the artifact to the run
  
-    # Log the model to W&B
+    logger.info("Uploading model artifact")
     artifact = wandb.Artifact(
-        args.output_artifact,
-        type="model_export",
-        description="Random Forest model exported from MLflow sklearn API",
+        name=args.output_artifact,
+        type="model_export", 
+        description="Random forest inference pipelie",
         metadata=rf_config
     )
-
-    artifact.add_dir("random_forest_dir")
+    
+    artifact.add_dir(random_forest_dir)
     run.log_artifact(artifact)
-    logger.info("Done exporting model")
 
     # Plot feature importance
     fig_feat_imp = plot_feature_importance(sk_pipe, processed_features)
