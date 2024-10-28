@@ -47,5 +47,5 @@ mlflow run https://github.com/M-Wakeb/build-ml-pipeline-for-short-term-rental-pr
             -P hydra_options="elt.sample='sample2.csv'"
 ```
 ## Links to project
-```wandb``` https://wandb.ai/m-almohaya-wakeb_data/nyc_airbnb?nw=nwusermalmohaya
-```Git```  https://github.com/M-Wakeb/build-ml-pipeline-for-short-term-rental-prices
+* ```wandb``` https://wandb.ai/m-almohaya-wakeb_data/nyc_airbnb?nw=nwusermalmohaya
+* ```Git```  https://github.com/M-Wakeb/build-ml-pipeline-for-short-term-rental-prices
